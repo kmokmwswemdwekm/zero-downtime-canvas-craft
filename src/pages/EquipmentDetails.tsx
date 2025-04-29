@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -9,7 +8,6 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { ArrowLeft, Calendar, Filter, Plus, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// Sample equipment data
 const equipmentData = {
   id: 1,
   name: "Main Generator",
@@ -42,7 +40,6 @@ const EquipmentDetails = () => {
   const [equipment, setEquipment] = useState<any>(null);
 
   useEffect(() => {
-    // Simulate API fetch
     const timer = setTimeout(() => {
       setEquipment(equipmentData);
       setLoading(false);
@@ -51,7 +48,6 @@ const EquipmentDetails = () => {
     return () => clearTimeout(timer);
   }, [id]);
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -62,7 +58,7 @@ const EquipmentDetails = () => {
       }
     }
   };
-  
+
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1 }
@@ -70,7 +66,7 @@ const EquipmentDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-50 dark:from-gray-900 dark:to-darkBg">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-50 dark:from-neutral-900 dark:to-[#1a1c20]">
         <motion.div 
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
@@ -82,19 +78,18 @@ const EquipmentDetails = () => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 dark:from-gray-900 dark:to-darkBg p-4 md:p-6"
+      className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 dark:from-neutral-900 dark:to-[#1a1c20] p-4 md:p-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <div className="max-w-7xl mx-auto">
-        {/* Back button and header */}
         <motion.div variants={itemVariants} className="mb-6">
           <Link to="/equipment" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-4">
             <ArrowLeft size={16} />
             <span>Back to Equipment</span>
           </Link>
-          
+
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold">{equipment.name}</h1>
             <StatusIndicator status={equipment.status as any} showIcon text="Operational" />
@@ -102,33 +97,28 @@ const EquipmentDetails = () => {
           <p className="text-muted-foreground">{equipment.model} • {equipment.category}</p>
         </motion.div>
 
-        {/* Equipment details and health */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <motion.div variants={itemVariants} className="lg:col-span-2">
             <GlassCard>
               <h2 className="text-lg font-medium mb-4">Equipment Details</h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Serial Number</p>
                   <p>{equipment.serialNumber}</p>
                 </div>
-                
                 <div>
                   <p className="text-sm text-muted-foreground">Manufacturer</p>
                   <p>{equipment.manufacturer}</p>
                 </div>
-                
                 <div>
                   <p className="text-sm text-muted-foreground">Installation Date</p>
                   <p>{new Date(equipment.installDate).toLocaleDateString()}</p>
                 </div>
-                
                 <div>
                   <p className="text-sm text-muted-foreground">Location</p>
                   <p>{equipment.location}</p>
                 </div>
-                
                 <div className="col-span-full mt-2">
                   <p className="text-sm text-muted-foreground mb-1">Last Seen Active</p>
                   <div className="inline-block bg-green-100 dark:bg-green-900/30 px-3 py-1 rounded-full text-sm">
@@ -137,13 +127,13 @@ const EquipmentDetails = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-6 flex gap-3">
                 <AnimatedButton className="flex items-center gap-2">
                   <Wrench size={16} />
                   Schedule Maintenance
                 </AnimatedButton>
-                
+
                 <Button variant="outline" className="flex items-center gap-2">
                   <Filter size={16} />
                   View Reports
@@ -151,11 +141,10 @@ const EquipmentDetails = () => {
               </div>
             </GlassCard>
           </motion.div>
-          
+
           <motion.div variants={itemVariants}>
             <GlassCard>
               <h2 className="text-lg font-medium mb-4">Health Status</h2>
-              
               <div className="mb-6">
                 <div className="flex justify-between mb-1">
                   <span>HP</span>
@@ -175,24 +164,22 @@ const EquipmentDetails = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-sm">Next Service Due</span>
                   <span className="text-sm font-medium text-amber-500">14 days</span>
                 </div>
-                
                 <div className="flex justify-between">
                   <span className="text-sm">Age</span>
                   <span className="text-sm font-medium">3 years, 2 months</span>
                 </div>
-                
                 <div className="flex justify-between">
                   <span className="text-sm">Lifecycle</span>
                   <span className="text-sm font-medium">42% Complete</span>
                 </div>
               </div>
-              
+
               <div className="mt-6">
                 <Button variant="outline" className="w-full flex items-center justify-center gap-2">
                   <Calendar size={16} />
@@ -203,11 +190,10 @@ const EquipmentDetails = () => {
           </motion.div>
         </div>
 
-        {/* Maintenance history */}
         <motion.div variants={itemVariants} className="mb-6">
           <GlassCard>
             <h2 className="text-lg font-medium mb-4">Maintenance Timeline</h2>
-            
+
             <div className="relative border-l-2 border-muted ml-3 pl-8 space-y-6 py-2">
               {equipment.maintenanceHistory.map((event: any, index: number) => (
                 <motion.div 
@@ -234,7 +220,6 @@ const EquipmentDetails = () => {
           </GlassCard>
         </motion.div>
 
-        {/* Notes */}
         <motion.div variants={itemVariants}>
           <GlassCard>
             <div className="flex justify-between items-center mb-4">
@@ -244,12 +229,12 @@ const EquipmentDetails = () => {
                 Add Note
               </AnimatedButton>
             </div>
-            
+
             <div className="space-y-4">
               {equipment.notes.map((note: any, index: number) => (
                 <motion.div 
                   key={note.id}
-                  className="bg-background/50 p-4 rounded-md"
+                  className="bg-white/70 dark:bg-[#2a2d33] p-4 rounded-md"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}

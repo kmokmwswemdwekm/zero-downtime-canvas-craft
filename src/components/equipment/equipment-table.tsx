@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { StatusIndicator } from "@/components/ui/status-indicator";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input"; 
 import { Button } from "@/components/ui/button";
 import { Search, Filter } from "lucide-react";
 
@@ -25,7 +24,7 @@ export function EquipmentTable() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [equipment, setEquipment] = useState(equipmentData);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Handle row click
   const handleRowClick = (id: number) => {
     // Add transition animation before navigation
@@ -34,7 +33,7 @@ export function EquipmentTable() {
       navigate(`/equipment/${id}`);
     }, 300);
   };
-  
+
   // Filter equipment based on search and category
   const filteredEquipment = equipment.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -46,23 +45,23 @@ export function EquipmentTable() {
     <div>
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-400" size={18} />
           <Input
             placeholder="Search equipment..."
-            className="pl-10"
+            className="pl-10 bg-black text-yellow-300 border border-yellow-600 focus:ring-yellow-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         
         <div className="flex gap-2">
-          <Button variant="outline" className="flex items-center gap-2">
+          <Button variant="outline" className="flex items-center gap-2 bg-black text-yellow-400 border border-yellow-600 hover:bg-yellow-500">
             <Filter size={16} />
             Filter
           </Button>
           
           <select
-            className="rounded-md border border-input bg-background px-3 py-2"
+            className="rounded-md border border-yellow-600 bg-black text-yellow-300 px-3 py-2"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -73,10 +72,10 @@ export function EquipmentTable() {
         </div>
       </div>
       
-      <div className="rounded-lg overflow-hidden border border-border">
+      <div className="rounded-lg overflow-hidden border border-yellow-600">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-muted text-muted-foreground text-sm">
+            <thead className="bg-black text-yellow-300 text-sm">
               <tr>
                 <th className="px-4 py-3 text-left">Name</th>
                 <th className="px-4 py-3 text-left">Category</th>
@@ -90,7 +89,7 @@ export function EquipmentTable() {
               {filteredEquipment.map((item, index) => (
                 <motion.tr
                   key={item.id}
-                  className="border-b border-border cursor-pointer hover:bg-muted/50 bg-white dark:bg-gray-900/90"
+                  className="border-b border-yellow-600 cursor-pointer hover:bg-yellow-500 bg-black text-yellow-300"
                   onClick={() => handleRowClick(item.id)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -100,7 +99,7 @@ export function EquipmentTable() {
                 >
                   <td className="px-4 py-3 font-medium">{item.name}</td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500">
                       {item.category}
                     </span>
                   </td>
@@ -109,10 +108,10 @@ export function EquipmentTable() {
                     <div className="flex items-center">
                       <div className="w-full bg-gray-200 rounded-full h-2.5 mr-2">
                         <div 
-                          className={`h-2.5 rounded-full ${
-                            item.health > 80 ? "bg-statusGood" :
-                            item.health > 60 ? "bg-statusWarning" :
-                            "bg-statusDanger"
+                          className={`h-2.5 rounded-full ${ 
+                            item.health > 80 ? "bg-green-500" :
+                            item.health > 60 ? "bg-yellow-400" :
+                            "bg-red-500"
                           }`}
                           style={{ width: `${item.health}%` }}
                         ></div>
@@ -129,7 +128,7 @@ export function EquipmentTable() {
               
               {filteredEquipment.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-4 py-8 text-center text-yellow-400">
                     No equipment found matching your search.
                   </td>
                 </tr>
@@ -144,12 +143,12 @@ export function EquipmentTable() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
         >
           <motion.div 
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full"
+            className="w-10 h-10 border-4 border-yellow-500 border-t-transparent rounded-full"
           />
         </motion.div>
       )}
