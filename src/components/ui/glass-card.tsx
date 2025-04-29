@@ -1,9 +1,8 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { HTMLMotionProps } from "framer-motion";
 
-interface GlassCardProps {
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
   role?: "admin" | "tech" | "viewer";
@@ -16,14 +15,18 @@ export function GlassCard({
   role, 
   animate = true,
   ...props 
-}: GlassCardProps & Omit<HTMLMotionProps<"div">, keyof GlassCardProps>) {
+}: GlassCardProps) {
   const roleBgClass = role ? `${role}-bg` : "";
   
-  const commonClassName = cn(
-    "glass-card rounded-xl p-6", 
-    roleBgClass,
-    className
-  );
+  // Fixed by separating props that go to the motion.div vs div
+  const commonProps = {
+    className: cn(
+      "glass-card rounded-xl p-6", 
+      roleBgClass,
+      className
+    ),
+    ...props
+  };
 
   // Animation props specifically for motion.div
   const animationProps = animate ? {
@@ -33,11 +36,11 @@ export function GlassCard({
   } : {};
 
   return animate ? (
-    <motion.div className={commonClassName} {...props} {...animationProps}>
+    <motion.div {...commonProps} {...animationProps}>
       {children}
     </motion.div>
   ) : (
-    <div className={commonClassName} {...props}>
+    <div {...commonProps}>
       {children}
     </div>
   );
