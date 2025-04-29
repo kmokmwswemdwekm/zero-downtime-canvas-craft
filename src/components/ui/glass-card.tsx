@@ -18,17 +18,8 @@ export function GlassCard({
 }: GlassCardProps) {
   const roleBgClass = role ? `${role}-bg` : "";
   
-  const cardProps = animate ? {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.3 },
-    className: cn(
-      "glass-card rounded-xl p-6", 
-      roleBgClass,
-      className
-    ),
-    ...props
-  } : {
+  // Fixed by separating props that go to the motion.div vs div
+  const commonProps = {
     className: cn(
       "glass-card rounded-xl p-6", 
       roleBgClass,
@@ -37,12 +28,19 @@ export function GlassCard({
     ...props
   };
 
+  // Animation props specifically for motion.div
+  const animationProps = animate ? {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.3 }
+  } : {};
+
   return animate ? (
-    <motion.div {...cardProps}>
+    <motion.div {...commonProps} {...animationProps}>
       {children}
     </motion.div>
   ) : (
-    <div className={cardProps.className} {...props}>
+    <div {...commonProps}>
       {children}
     </div>
   );

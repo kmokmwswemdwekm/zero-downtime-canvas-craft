@@ -38,7 +38,7 @@ const Dashboard = () => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 dark:from-gray-900 dark:to-darkBg p-4 md:p-6"
+      className="min-h-screen bg-gradient-to-br from-steelBlue to-machineDark bg-machine-pattern p-4 md:p-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -48,14 +48,14 @@ const Dashboard = () => {
         <motion.div variants={itemVariants} className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <div className="flex gap-2">
-            <button className="p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-sm">
-              <Bell size={20} className="text-gray-600 dark:text-gray-300" />
+            <button className="p-2 rounded-full bg-gray-800/80 shadow-sm">
+              <Bell size={20} className="text-gray-300" />
             </button>
-            <button className="p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-sm">
-              <Settings size={20} className="text-gray-600 dark:text-gray-300" />
+            <button className="p-2 rounded-full bg-gray-800/80 shadow-sm">
+              <Settings size={20} className="text-gray-300" />
             </button>
-            <button className="p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-sm">
-              <User size={20} className="text-gray-600 dark:text-gray-300" />
+            <button className="p-2 rounded-full bg-gray-800/80 shadow-sm">
+              <User size={20} className="text-gray-300" />
             </button>
           </div>
         </motion.div>

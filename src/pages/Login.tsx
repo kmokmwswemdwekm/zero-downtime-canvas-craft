@@ -5,10 +5,16 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState<"admin" | "tech" | "viewer">("viewer");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Animation variants
   const containerVariants = {
@@ -27,8 +33,45 @@ const Login = () => {
     visible: { y: 0, opacity: 1 }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      if (isLogin) {
+        // Handle login
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+      } else {
+        // Handle signup
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: fullName,
+              role: role,
+            }
+          }
+        });
+        
+        if (error) throw error;
+      }
+    } catch (err: any) {
+      console.error("Authentication error:", err);
+      setError(err.message || "An error occurred during authentication");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-blue-50 dark:from-gray-900 dark:to-darkBg p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-steelBlue to-machineDark bg-machine-pattern p-4">
       <motion.div
         className="w-full max-w-md"
         initial="hidden"
@@ -57,12 +100,18 @@ const Login = () => {
             </div>
           </motion.div>
           
-          <form>
+          <form onSubmit={handleSubmit}>
             {!isLogin && (
               <motion.div variants={itemVariants} className="space-y-4 mb-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" placeholder="John Doe" />
+                  <Input 
+                    id="name" 
+                    placeholder="John Doe" 
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                  />
                 </div>
               </motion.div>
             )}
@@ -70,12 +119,26 @@ const Login = () => {
             <motion.div variants={itemVariants} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="name@company.com" />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="name@company.com" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
               
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" placeholder="••••••••" />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  placeholder="••••••••" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
               
               {!isLogin && (
@@ -85,21 +148,21 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={() => setRole("admin")}
-                      className={`p-2 rounded border ${role === "admin" ? 'bg-admin text-white' : 'border-gray-300'}`}
+                      className={`p-2 rounded border ${role === "admin" ? 'bg-admin text-white' : 'border-gray-700'}`}
                     >
                       Admin
                     </button>
                     <button
                       type="button"
                       onClick={() => setRole("tech")}
-                      className={`p-2 rounded border ${role === "tech" ? 'bg-tech text-gray-800' : 'border-gray-300'}`}
+                      className={`p-2 rounded border ${role === "tech" ? 'bg-tech text-gray-800' : 'border-gray-700'}`}
                     >
                       Technician
                     </button>
                     <button
                       type="button"
                       onClick={() => setRole("viewer")}
-                      className={`p-2 rounded border ${role === "viewer" ? 'bg-viewer text-white' : 'border-gray-300'}`}
+                      className={`p-2 rounded border ${role === "viewer" ? 'bg-viewer text-white' : 'border-gray-700'}`}
                     >
                       Viewer
                     </button>
@@ -108,19 +171,28 @@ const Login = () => {
               )}
             </motion.div>
             
+            {error && (
+              <motion.div 
+                variants={itemVariants} 
+                className="mt-4 p-2 bg-destructive/20 text-destructive rounded-md text-sm"
+              >
+                {error}
+              </motion.div>
+            )}
+            
             <motion.div variants={itemVariants} className="mt-6">
-              <AnimatedButton className="w-full">
-                {isLogin ? "Login" : "Create Account"}
+              <AnimatedButton type="submit" className="w-full" disabled={loading}>
+                {loading ? "Loading..." : isLogin ? "Login" : "Create Account"}
               </AnimatedButton>
             </motion.div>
             
             <motion.div variants={itemVariants} className="mt-4">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
+                  <span className="w-full border-t border-gray-700" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white dark:bg-gray-900 px-2 text-muted-foreground">
+                  <span className="bg-gray-900 dark:bg-gray-900 px-2 text-muted-foreground">
                     Or continue with
                   </span>
                 </div>
@@ -129,7 +201,19 @@ const Login = () => {
               <div className="mt-4">
                 <AnimatedButton 
                   variant="outline" 
+                  type="button"
                   className="w-full flex items-center justify-center gap-2"
+                  onClick={async () => {
+                    try {
+                      const { error } = await supabase.auth.signInWithOAuth({
+                        provider: 'google',
+                      });
+                      if (error) throw error;
+                    } catch (err: any) {
+                      console.error("Google sign-in error:", err);
+                      setError(err.message || "Failed to sign in with Google");
+                    }
+                  }}
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path

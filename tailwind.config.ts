@@ -64,7 +64,10 @@ export default {
         statusGood: '#06D6A0',
         statusWarning: '#FFD166',
         statusDanger: '#EF476F',
-        darkBg: '#073B4C',
+        darkBg: '#151b26',      // Darker background
+        machineDark: '#1A1F2C', // Dark machine-inspired color
+        metalGray: '#2A2D34',   // Metal-like gray
+        steelBlue: '#2C3544',   // Steel blue for machine vibes
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -118,6 +121,8 @@ export default {
       },
       backgroundImage: {
         'gradient-glass': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1))',
+        'machine-pattern': 'radial-gradient(circle at center, #2a2d34 0.1rem, transparent 0.1rem), radial-gradient(circle at center, #2a2d34 0.1rem, transparent 0.1rem)',
+        'steel-gradient': 'linear-gradient(to bottom, #2A2D34, #1A1F2C)',
       }
     }
   },

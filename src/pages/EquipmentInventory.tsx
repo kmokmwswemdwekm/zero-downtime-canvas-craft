@@ -25,7 +25,7 @@ const EquipmentInventory = () => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 dark:from-gray-900 dark:to-darkBg p-4 md:p-6"
+      className="min-h-screen bg-gradient-to-br from-steelBlue to-machineDark bg-machine-pattern p-4 md:p-6"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
